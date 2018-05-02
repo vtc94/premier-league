@@ -1,0 +1,164 @@
+    *,*:before,*:after{
+     border:1px solid red;
+     box-sizing: border-box;
+	font-family: Roboto, sans-serif;	  
+    }
+    body{
+      margin:0;
+    }
+    .body{width:100%;height:100%;border:3px solid yellow;}
+    /*-----------------------------------------header-------------------------*/
+    .header{height:40px;background:rgb(56,0,60);}
+	.header img{height:40px;}
+    /*-----------------------------------------main---------------------------------*/
+    .main{width: 100%;border:1px solid green;position:relative;}
+    /*----------------------------------------League table-------------------------------*/
+	.outer{
+		height:400px; margin: 2.5% 0%; 
+		overflow:hidden;
+		border:1px solid black;
+		position:relative;
+	}
+    .inner{
+		width:100%;
+		height: 100%;
+		overflow-y:auto;
+		overflow-x:hidden;
+		box-sizing:initial;
+		padding-right:15px;
+		position:absolute;
+	}
+	.inner table,.inner th,.inner tr,.inner td{border:1px solid green;}
+	.inner table{
+		width:100%;
+		border-collapse:collapse;
+		border-spacing:2px;
+		margin-left:7px;
+	}
+	.inner th,.inner td{
+		vertical-align:middle;
+		text-align:center;
+		border:none;
+		font-size:12px;
+	}
+	.inner tr:nth-child(even){background:lightgrey;}
+	.inner td:nth-child(3),.inner th:nth-child(3){text-align:left;}
+	.inner td:nth-child(3):after{
+		content:"";
+		height:20px;
+		border-right:1px solid grey; 
+		float:right;
+	}
+	.inner td:nth-child(8),.inner th:nth-child(8),
+	.inner td:nth-child(9),.inner th:nth-child(9){display:none;}
+	.inner caption{font-size:16px;padding:15px;font-weight:900;color:rgb(56,0,60);}
+	/*----------------------------------------team information----------------*/
+	.teamInfo{margin:2.5% 7.5px;;border:1px solid black;}
+	.teamInfo > div{
+		width:95%;
+		min-width:320px; 
+		height:600px; 
+		margin: auto; 
+		margin-top:15px;
+		margin-bottom:15px;
+		position:relative;
+		overflow:hidden;
+	}
+	.teamInfo > div:first-child{
+		width:95%;
+		height:70px;
+		margin:2.5%;
+		overflow-x:auto;
+		overflow-y:hidden;
+		position:relative;}
+	/*-------------------------------------teamList------------------------------*/
+	#teamList table{border-collapse:collapse;height:60px;}
+	#teamList td{
+		text-align:center;
+	}
+	.list{box-sizing:initial; padding:0 5px;}
+	.list:hover{width:50px;height:50px;}
+	/*--------------------------------------result---------------------------------*/
+	/*---------------------------------Last Game----------------------------*/
+	#lastGame{
+		position:aboslute;
+	}
+	#lastGame table, #lastGame tr, #lastGame td{
+		border:none;
+	}
+	#time{font-size:12px;}
+	#lResult{
+		font-size:35px;
+		vertical-align:middle;
+		padding:15px 10px 10px 0;
+	}
+	#homeName,#awayName{font-weight:600;width:20%;}
+	#lHalf{font-size:13px;padding-top:10px;}
+	/*------------------------------All game------------------------------------*/
+	#allGame{
+		width:100%;
+		position:absolute;
+		overflow-y:auto;
+		height:500px;
+	}
+/*---------------------------------------------ipad lanscape--------------------------------------*/
+@media only screen and (min-width:769px){
+	.header{height:50px;}
+	.header img{height:50px;}
+	/*----------------------------------------League table-------------------------------*/
+	.outer{height:600px;}
+	.inner td:nth-child(3),.inner th:nth-child(3){text-align:left;display:table-cell;}
+	.inner td:nth-child(8),.inner th:nth-child(8),
+	.inner td:nth-child(9),.inner th:nth-child(9){display:table-cell;}
+	.inner th,.inner td{padding:10px;font-size:14px;}
+	/*----------------------------------------team information----------------*/
+	.teamInfo > div{width:47%; height:600px;display:inline-block;margin:15px 1%}
+/*---------------------------------------------Pc, Laptop--------------------------------------*/
+@media only screen and (min-width:1024px){
+	.header{height:75px;}
+	.header img{height:75px;}
+	/*----------------------------------------League table-------------------------------*/
+	.outer{
+		display:inline-block;
+		width:63%;
+		height:800px;
+		margin-left:5%;
+	}
+	.inner caption{text-align:left; font-size:20px;}
+
+	hr{display:none;}
+	/*----------------------------------------team information----------------*/
+	.in{
+		width:27%;
+		min-width:300px;
+		position:relative;
+		height:800px;
+		overflow:hidden;
+		margin:2.5% 0% 2.5% 10px;
+		padding:0;
+		display:inline-block;
+	}
+	.teamInfo{
+		width:100%;
+		height:800px;
+		overflow:auto;
+		border:1px solid black;
+		position:relative;
+		padding:0;
+		margin:0;
+		box-sizing:initial;
+		overflow-y:auto;
+		overflow-x:hidden;
+		padding-right:15px;
+		
+	}
+	
+	.teamInfo > div{
+		width:100%;
+		min-width:300px; 
+		height:600px;
+		margin:0; 
+		margin-top:15px;
+	}
+	.teamInfo > div:first-child{margin:0;}
+}
