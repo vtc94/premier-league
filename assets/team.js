@@ -79,7 +79,7 @@ function show(r,a,d,n){
 		dataType: 'json',
 		type: 'GET',
 	}).done(function(last){
-		//console.log(last);
+		console.log(last.fixtures);
 		var fix = last.fixtures;
 		for(var i=last.count-1;i>=0;i--){
 			
@@ -94,9 +94,11 @@ function show(r,a,d,n){
 						+ fix[i].result.goalsAwayTeam;
 				document.getElementById("lResult").innerHTML = result;
 				
-				var half = 'Half Time:' + fix[i].result.halfTime.goalsHomeTeam
-								+ ' - ' + fix[i].result.halfTime.goalsAwayTeam;
-				document.getElementById("lHalf").innerHTML = half;
+				if(fix[i].result.halfTime != null){
+					var half = 'Half Time:' + fix[i].result.halfTime.goalsHomeTeam
+									+ ' - ' + fix[i].result.halfTime.goalsAwayTeam;
+					document.getElementById("lHalf").innerHTML = half;
+				}
 				
 				var homeLink = 'https' + fix[i]._links.homeTeam.href.substring(4);
 				getLogo(homeLink,"homePic","homeName");
