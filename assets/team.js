@@ -326,7 +326,7 @@ function show(r,a,d,n){
 function hoh(lk,hn,an,id){
 	$.ajax({
 	headers: { 'X-Auth-Token': 'a6d185568af249c09ac753acf3edd83e' },
-	url: lk,
+	url: 'https://api.football-data.org/v1/competitions/' + leagueId + "/fixtures",
 	dataType: 'json',
 	type: 'GET',
 	}).done(function(rival) {
