@@ -116,8 +116,8 @@ function show(r,a,d,n){
 		for(var i=last.count-1;i>=0;i--){
 			if(fix[i].awayTeamName == n || fix[i].homeTeamName == n){
 			//console.log(fix[i]);
-				var lk = "'" + last._links.self.href + "'";
-				console.log(lk);
+				var lk = "'" + 'https://api.football-data.org/v1/competitions/' + leagueId + '/fixtures' + "'";
+				//console.log(lk);
 				var hn = "'"+fix[i].homeTeamName+"'";
 				var an = "'"+fix[i].awayTeamName+"'";
 				var id = "'"+"hToh"+i+"'";
