@@ -14,7 +14,9 @@ function getTeam(leagueId){
 		for(var i=response.count-1;i>=0;i--){
 			var name = "'"+l[i].name+"'";
 			var result = "'https"+l[i]._links.self.href.substring(4)+"'";
-			var crestUrl = l[i].crestUrl.substring(0,5) == "https"? l[i].crestUrl: "https"+l[i].crestUrl.substring(4);
+			if(l[i].crestUrl != null){
+				var crestUrl = l[i].crestUrl.substring(0,5) == "https"? l[i].crestUrl: "https"+l[i].crestUrl.substring(4);
+			}
 			img += '<td><img class="list" src="' + crestUrl
 				+ '" width=30px height=30px onclick="show('+result+','+i+','+c+','+name+')"></td>';
 		}
@@ -48,6 +50,7 @@ function show(r,a,d,n){
 			image[i].style.height="30px";
 		}
 	}
+	//console.log(r + " . " + a + " . " + d + " . " + n);
 /*---------------------------------Last Game----------------------------------*/	
 	function lastGame(){
 		var lr = '<table id="lR" align="center" width="100%">'
@@ -75,16 +78,15 @@ function show(r,a,d,n){
 	
 	$.ajax({
 		headers: { 'X-Auth-Token': 'a6d185568af249c09ac753acf3edd83e' },
-		url: r+"/fixtures",
+		url: 'https://api.football-data.org/v1/competitions/' + leagueId + "/fixtures",
 		dataType: 'json',
 		type: 'GET',
 	}).done(function(last){
-		console.log(last.fixtures);
+		//console.log(last);
 		var fix = last.fixtures;
 		for(var i=last.count-1;i>=0;i--){
-			
-			if(fix[i].status == "FINISHED"){
-				
+			if(fix[i].status == "FINISHED" && (fix[i].awayTeamName == n || fix[i].homeTeamName == n)){
+				//console.log(fix[i]);
 				var date = 'Date: '+fix[i].date.substring(0,10)
 						+ '<br><span style="margin-left:15px;color:black;background:rgba(240,240,240,0.5)">'
 						+fix[i].date.substring(11,19)+'</span>';
@@ -112,37 +114,40 @@ function show(r,a,d,n){
 /*---------------------------------------All games--------------------------------*/		
 		var ar = "";
 		for(var i=last.count-1;i>=0;i--){
+			if(fix[i].awayTeamName == n || fix[i].homeTeamName == n){
 			//console.log(fix[i]);
-			var lk = "'"+r+"/fixtures'";
-			var hn = "'"+fix[i].homeTeamName+"'";
-			var an = "'"+fix[i].awayTeamName+"'";
-			var id = "'"+"hToh"+i+"'";
-			ar += 	'<tr>'
-						+'<td colspan="3" style="font-size:12px;padding-top:15px;text-align:center">'
-							+ '<span style="padding:3px 3px 1px 3px;color:rgb(255,100,20)">'
-								+fix[i].date.substring(0,10)
-							+'</span>'
-						+'</td>'
-					+ '</tr>'
-					+ '<tr id="all" class="hide" onmouseover="hoh('+lk+','+hn+','+an+','+id+')" onmouseout="none()">'
-						+ '<td align="right" style="background:rgba(5,5,5,0.5);color:rgba(250,250,250,0.5);font-weight:900;font-size:12px;height:40px">'
-							+fix[i].homeTeamName
-						+'</td>'
-						+ '<td align="center" width="80px" style="padding:10px;background:rgba(5,5,5,0.5);font-weight:600;height:60px;font-size:13px;">';
-						if(fix[i].status == "TIMED" || fix[i].status == "SCHEDULED"){
-							ar += 'Start Time<br>'+fix[i].date.substring(11,19); 
-						} 
-						else if(fix[i].status == "FINISHED"){
-							ar += fix[i].result.goalsHomeTeam + ' - '
-								+ fix[i].result.goalsAwayTeam;
-						} else {
-							ar += "0 - 0<br>Postponed";
-						}
-					ar +='</td>'
-						+ '<td align="left" style="background:rgba(5,5,5,0.5);color:rgba(250,250,250,0.5);font-weight:900;font-size:12px;height:40px">'
-							+fix[i].awayTeamName
-						+'</td>'
-			+ '</tr>';
+				var lk = "'" + last._links.self.href + "'";
+				console.log(lk);
+				var hn = "'"+fix[i].homeTeamName+"'";
+				var an = "'"+fix[i].awayTeamName+"'";
+				var id = "'"+"hToh"+i+"'";
+				ar += 	'<tr>'
+							+'<td colspan="3" style="font-size:12px;padding-top:15px;text-align:center">'
+								+ '<span style="padding:3px 3px 1px 3px;color:rgb(255,100,20)">'
+									+fix[i].date.substring(0,10)
+								+'</span>'
+							+'</td>'
+						+ '</tr>'
+						+ '<tr id="all" class="hide" onmouseover="hoh('+lk+','+hn+','+an+','+id+')" onmouseout="none()">'
+							+ '<td align="right" style="background:rgba(5,5,5,0.5);color:rgba(250,250,250,0.5);font-weight:900;font-size:12px;height:40px">'
+								+fix[i].homeTeamName
+							+'</td>'
+							+ '<td align="center" width="80px" style="padding:10px;background:rgba(5,5,5,0.5);font-weight:600;height:60px;font-size:13px;">';
+							if(fix[i].status == "TIMED" || fix[i].status == "SCHEDULED"){
+								ar += 'Start Time<br>'+fix[i].date.substring(11,19); 
+							} 
+							else if(fix[i].status == "FINISHED"){
+								ar += fix[i].result.goalsHomeTeam + ' - '
+									+ fix[i].result.goalsAwayTeam;
+							} else {
+								ar += "0 - 0<br>Postponed";
+							}
+						ar +='</td>'
+							+ '<td align="left" style="background:rgba(5,5,5,0.5);color:rgba(250,250,250,0.5);font-weight:900;font-size:12px;height:40px">'
+								+fix[i].awayTeamName
+							+'</td>'
+					+ '</tr>';
+			}
 		}
 		document.getElementById("allGame").innerHTML = '<table id="aR" align="center" width="100%">'+ar+ '</table>';
 		
@@ -157,7 +162,7 @@ function show(r,a,d,n){
 		var streak = 0;		
 		var j = 0;
 		for(var i=last.count-1;i>=0;i--){
-			if(fix[i].status == "FINISHED"){
+			if(fix[i].status == "FINISHED" && (fix[i].awayTeamName == n || fix[i].homeTeamName == n)){
 				if(n == fix[i].homeTeamName){
 					if(fix[i].result.goalsHomeTeam > fix[i].result.goalsAwayTeam){
 						win++;
@@ -316,50 +321,53 @@ function show(r,a,d,n){
 		document.getElementById("outer").className="outer2";
 		document.getElementById("lcaption").className="lcaption2";
 }
+
 /*-------------------------------------Head to Head-------------------------------*/
-	function hoh(lk,hn,an,id){
-		$.ajax({
-		headers: { 'X-Auth-Token': 'a6d185568af249c09ac753acf3edd83e' },
-		url: lk,
-		dataType: 'json',
-		type: 'GET',
-		}).done(function(rival) {
-			//console.log(rival);
-			var fix = rival.fixtures;
-			var h2h = "";
-			for(var i=rival.count-1;i>=0;i--){
-				if(fix[i].status == "FINISHED"){
-					var ht = fix[i].homeTeamName;
-					var at = fix[i].awayTeamName;
-						
-					if((hn == ht && an == at)||(hn == at && an == ht)){
-						h2h += '<tr>'
-								+'<td colspan="3" style="padding:10px 5px 5px 5px;font-size:10px;">'
-									+ fix[i].date.substring(0,10)
-								+'</td>'
-							+ '</tr>'
-							+ '<tr id="all">'
-								+ '<td align="center" style="border-right:3px solid blue;font-weight:600">'
-									+ht
-								+'</td>'
-								+ '<td align="center" width="50px" style="padding:3px;font-size:14px;">'
-									+ fix[i].result.goalsHomeTeam + ' - '
-									+ fix[i].result.goalsAwayTeam
-								+'</td>'
-								+ '<td align="center" style="border-left:3px solid red;font-weight:600">'
-									+at
-								+'</td>'
-							+ '</tr>';			
-					}
+function hoh(lk,hn,an,id){
+	$.ajax({
+	headers: { 'X-Auth-Token': 'a6d185568af249c09ac753acf3edd83e' },
+	url: lk,
+	dataType: 'json',
+	type: 'GET',
+	}).done(function(rival) {
+		//console.log(rival);
+		var fix = rival.fixtures;
+		var h2h = "";
+		for(var i=rival.count-1;i>=0;i--){
+			var ht = fix[i].homeTeamName;
+			var at = fix[i].awayTeamName;
+			
+			var filter = ((hn == ht || hn == at) && (an == ht || an == at));
+			if(fix[i].status == "FINISHED" && filter){	
+				if((hn == ht && an == at)||(hn == at && an == ht)){
+					h2h += '<tr>'
+							+'<td colspan="3" style="padding:10px 5px 5px 5px;font-size:10px;">'
+								+ fix[i].date.substring(0,10)
+							+'</td>'
+						+ '</tr>'
+						+ '<tr id="all">'
+							+ '<td align="center" style="border-right:3px solid blue;font-weight:600">'
+								+ht
+							+'</td>'
+							+ '<td align="center" width="50px" style="padding:3px;font-size:14px;">'
+								+ fix[i].result.goalsHomeTeam + ' - '
+								+ fix[i].result.goalsAwayTeam
+							+'</td>'
+							+ '<td align="center" style="border-left:3px solid red;font-weight:600">'
+								+at
+							+'</td>'
+						+ '</tr>';			
 				}
 			}
-			document.getElementById("hToh").innerHTML = '<div class="back"><table id="h2h" align="center" width="100%">'
-														+'<caption>Head to Head</caption>'
-														+h2h
-														+'</table><div>';
-		});
-		document.getElementById("hToh").style.display ="block";
-	}
+		}
+		document.getElementById("hToh").innerHTML = '<div class="back"><table id="h2h" align="center" width="100%">'
+													+'<caption>Head to Head</caption>'
+													+h2h
+													+'</table><div>';
+	});
+	document.getElementById("hToh").style.display ="block";
+}
+
 function none(){
 	document.getElementById("hToh").style.display ="none";
 }

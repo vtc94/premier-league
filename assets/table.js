@@ -22,7 +22,7 @@ getLeague.then(() =>{
 		dataType: 'json',
 		type: 'GET',
 	}).done(function(response) {
-		//console.log(response);
+		console.log(response);
 		var change = function change(){
 			var head = "";
 			var w = parseInt(window.innerWidth);
@@ -46,7 +46,7 @@ getLeague.then(() =>{
 			var t = response.standing;
 			for(var i=0;i<t.length;i++){
 				var crestURI = "";
-				if(t[i].crestURI.substring(0,5) != "https"){
+				if(t[i].crestURI != null && t[i].crestURI.substring(0,5) != "https"){
 					crestURI = "https" + t[i].crestURI.substring(4);
 				} else {
 					crestURI = t[i].crestURI;
